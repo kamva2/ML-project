@@ -6,7 +6,7 @@ from sklearn.metrics import *
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 
-
+# This script loads Olympic team data, builds regression models to predict medal counts, evaluates their performance, and predicts medal totals for the next Olympics based on the latest team data.
 def load_data(path: str = "teams.csv") -> pd.DataFrame:
 	teams = pd.read_csv(path)
 	selected_columns = [
