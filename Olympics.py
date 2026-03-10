@@ -1,8 +1,8 @@
 import pandas as pd
-from sklearn.ensemble import *
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import *
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 
@@ -25,7 +25,7 @@ def load_data(path: str = "teams.csv") -> pd.DataFrame:
 	teams = teams[selected_columns].copy()
 	return teams
 
-
+# Builds a dictionary of regression models to evaluate.
 def build_models() -> dict:
 	return {
 		"LinearRegression": LinearRegression(),
@@ -38,7 +38,7 @@ def build_models() -> dict:
 		"GradientBoosting": GradientBoostingRegressor(random_state=42),
 	}
 
-
+# Evaluates each model using MAE, RMSE, and R2 metrics, and identifies the best model based on MAE.
 def evaluate_models(df: pd.DataFrame):
 	feature_columns = [
 		"year",
@@ -86,7 +86,7 @@ def evaluate_models(df: pd.DataFrame):
 	metrics = pd.DataFrame(results).sort_values("MAE").reset_index(drop=True)
 	return best_name, best_model, metrics
 
-
+# Uses the best model to predict medal totals for the next Olympics based on the latest team data, and returns the top predictions sorted by predicted medals.
 def predict_next_games(df: pd.DataFrame, model: Pipeline) -> pd.DataFrame:
 	latest_year = int(df["year"].max())
 	next_year = latest_year + 4
